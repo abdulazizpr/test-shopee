@@ -244,8 +244,8 @@ router.post('/get-exchange-rate-tracking', function(req, res, next) {
       }else{
         //if data is null add insufficient data
         for(var i=0;i<rows.length;i++){
-          rows[i].daily_rate = (rows[i].daily_rate) ? rows[i].daily_rate : "insufficient data";
-          rows[i].avg_rate_7_days = (rows[i].avg_rate_7_days) ? rows[i].avg_rate_7_days : "insufficient data";
+          rows[i].daily_rate = (rows[i].daily_rate>999) ? roundTo(rows[i].daily_rate,0) : (rows[i].daily_rate) ? rows[i].daily_rate : "insufficient data";
+          rows[i].avg_rate_7_days =(rows[i].avg_rate_7_days>999) ? roundTo(rows[i].avg_rate_7_days,0) : (rows[i].avg_rate_7_days) ? rows[i].avg_rate_7_days : "insufficient data";
         }
         res.json({        
           data : rows, 
