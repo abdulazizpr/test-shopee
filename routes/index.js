@@ -11,7 +11,7 @@ var GetDates = function (startDate, daysToAdd) {
   for (var i = 0; i <= daysToAdd; i++) {
       var currentDate = new Date();
       currentDate.setDate(startDate.getDate() + i);
-      aryDates.push(currentDate.getFullYear()+'-'+leftPad(currentDate.getMonth(),2)+'-'+leftPad(currentDate.getDate(),2));
+      aryDates.push(currentDate.getFullYear()+'-'+leftPad(currentDate.getMonth()+1,2)+'-'+leftPad(currentDate.getDate(),2));
   }
 
   return aryDates;
@@ -26,7 +26,7 @@ var leftPad = function (number, targetLength) {
 }
 
 //get all data currency
-router.get('/', function(req, res, next) {
+router.get('/get-currency', function(req, res, next) {
   conn.query('SELECT * FROM currency', function (error, rows, fields){
     if(error){
       res.json({        
@@ -299,7 +299,13 @@ router.post('/get-exchange-rate-trend', function(req, res, next) {
         var data = [];
         const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
         var dates7days = GetDates(new Date(date),7);
-        
+
+        dates7days.sort(function(a,b){
+          var a1 = a.split(','),
+          b1 = b.split(',');
+          
+          return new Date(a1[0], a1[1], a1[2]) - new Date(b1[0], b1[1], b1[2]);
+        });
 
         //calculate to prediction trend
         for(var i=0;i<rows.length;i++){
@@ -320,21 +326,22 @@ router.post('/get-exchange-rate-trend', function(req, res, next) {
         var b = (semi_avg_2 - semi_avg_1) / (data.length - 1);
 
         var x = 4;
+        var n = dates7days.length-2;
         var points = 7;
         var result = [];
 
-        //create 7 points
+        //create 7 points        
         for(var i=0;i<points;i++){
           var Y = roundTo(semi_avg_1 + (b*x),6)
           result.push({
-            date : dates7days[i],
-            daily_rate : Y
+            date : dates7days[n],
+            daily_rate : (Y>=100) ? roundTo(Y,0): Y
           });
 
           x++;
+          n--;
         }
 
-        result = result.sort(function(a,b){return a.date < b.date;});
         var min = result.reduce(function (prev, current) {
           return (prev.daily_rate < current.daily_rate) ? prev : current
         });
@@ -349,7 +356,7 @@ router.post('/get-exchange-rate-trend', function(req, res, next) {
           data :{
             from : from,
             to : to,
-            average : roundTo(all_avg,6),
+            average : (all_avg>100)?roundTo(all_avg,0):roundTo(all_avg,6),
             variance : roundTo(variance,6),
             entries : result
           }, 
@@ -363,7 +370,7 @@ router.post('/get-exchange-rate-trend', function(req, res, next) {
   });
 });
 
-router.delete('/delete-daily-exchange-rate', function(req, res, next) {
+router.delete('/delete-exchange-rate', function(req, res, next) {
   var id = req.body.id;
   
   var query = 'SELECT * from exchange_rate where id='+id;

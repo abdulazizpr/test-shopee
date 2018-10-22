@@ -27,7 +27,7 @@ Response:
 }
 ```
 **2. User has a list of exchange rates to be tracked**
-Endpoint url : `YOUR_URL/add-daily-exchange-rate` 
+Endpoint url : `YOUR_URL/get-exchange-rate-tracking` 
 Method : `POST`
 Parameters : 
 ```json
@@ -38,7 +38,6 @@ Parameters :
 Response:
 ```json
 {
-    {
     "data": [
         {
             "from": "GBP",
@@ -56,7 +55,7 @@ Response:
             "from": "USD",
             "to": "IDR",
             "daily_rate": 15187,
-            "avg_rate_7_days": 15187
+            "avg_rate_7_days": 15194
         },
         {
             "from": "JPY",
@@ -86,38 +85,38 @@ Response:
 ```json
 {
     "data": {
-        "from": "USD",
-        "to": "GBP",
-        "average": 0.760086,
-        "variance": 0.007225,
+        "from": "GBP",
+        "to": "USD",
+        "average": 1.311286,
+        "variance": 0.004375,
         "entries": [
             {
-                "date": "2018-09-25",
-                "daily_rate": 0.768292
+                "date": "2018-10-25",
+                "daily_rate": 1.311483
             },
             {
-                "date": "2018-09-24",
-                "daily_rate": 0.767087
+                "date": "2018-10-24",
+                "daily_rate": 1.310754
             },
             {
-                "date": "2018-09-23",
-                "daily_rate": 0.765883
+                "date": "2018-10-23",
+                "daily_rate": 1.310025
             },
             {
-                "date": "2018-09-22",
-                "daily_rate": 0.764679
+                "date": "2018-10-22",
+                "daily_rate": 1.309296
             },
             {
-                "date": "2018-09-21",
-                "daily_rate": 0.763475
+                "date": "2018-10-21",
+                "daily_rate": 1.308567
             },
             {
-                "date": "2018-09-20",
-                "daily_rate": 0.762271
+                "date": "2018-10-20",
+                "daily_rate": 1.307838
             },
             {
-                "date": "2018-09-19",
-                "daily_rate": 0.761067
+                "date": "2018-10-19",
+                "daily_rate": 1.307108
             }
         ]
     },
@@ -129,7 +128,7 @@ Response:
 ```
 
 **4. User wants to add an exchange rate to the lists**
-Endpoint url : `YOUR_URL/get-exchange-rate-trend` 
+Endpoint url : `YOUR_URL/add-exchange-rate` 
 Method : `POST`
 Parameters : 
 ```json
@@ -148,3 +147,65 @@ Response :
     "message": "Add data success"
 }
 ```
+**5. User wants to remove an exchange rate from the list**
+Endpoint url : `YOUR_URL/delete-exchange-rate` 
+Method : `DELETE`
+Parameters : 
+```json
+{
+	//add id to delete exchange rate
+	"id" : 1
+}
+```
+Response :
+```json
+{
+    "status": 200,
+    "success": true,
+    "error": null,
+    "message": "Delete data success"
+}
+```
+**To see all data of curreny use this endpoint**
+Endpoint url : `YOUR_URL/get-currency` 
+Method : `GET`
+Response :
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "name_currency": "GBP"
+        },
+        {
+            "id": 2,
+            "name_currency": "USD"
+        },
+        {
+            "id": 3,
+            "name_currency": "IDR"
+        },
+        {
+            "id": 4,
+            "name_currency": "JPY"
+        }
+    ],
+    "status": 200,
+    "success": true,
+    "error": null,
+    "message": "success"
+}
+```
+# Design Table
+This is design table data for this program
+![enter image description here](https://lh3.googleusercontent.com/OxRoAUg4rPCJFFP80qftdjsMPTSx1jjHPOruNAMQ4IufO6tSLSN29cJfUckyhaJnqvVxOe9Fu68H "Design Table")
+
+However, table currency is parent for all table because base of all currency.
+# How to use it
+To use it this program, you can run it on docker and follow this command :
+```docker
+docker-compose up -d
+docker restart NAME_OF_CONTAINER_APP //because error of connection to MYSQL
+```
+
+FYI : This data source from : [https://www.investing.com/] and data is available from 2018-10-01 - 2018-10-19
