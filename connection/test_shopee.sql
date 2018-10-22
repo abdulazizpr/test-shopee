@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Okt 2018 pada 11.18
+-- Waktu pembuatan: 22 Okt 2018 pada 09.21
 -- Versi server: 10.1.31-MariaDB
 -- Versi PHP: 7.2.4
 
@@ -100,7 +100,24 @@ INSERT INTO `daily_exchange_rate` (`id`, `date`, `id_exchange_rate`, `rate`) VAL
 (49, '2018-10-02', 2, 0.7705),
 (50, '2018-10-01', 2, 0.7667),
 (52, '2018-10-19', 3, 15187),
-(53, '2018-10-19', 3, 15187);
+(53, '2018-10-18', 3, 15193),
+(54, '2018-10-17', 3, 15155),
+(55, '2018-10-16', 3, 15200),
+(56, '2018-10-15', 3, 15210),
+(57, '2018-10-14', 3, 15205),
+(58, '2018-10-13', 3, 15211),
+(59, '2018-10-12', 3, 15205),
+(60, '2018-10-11', 3, 15235),
+(61, '2018-10-10', 3, 15203),
+(62, '2018-10-09', 3, 15230),
+(63, '2018-10-08', 3, 15217),
+(64, '2018-10-07', 3, 15180),
+(65, '2018-10-06', 3, 15280),
+(66, '2018-10-05', 3, 15180),
+(67, '2018-10-04', 3, 15170),
+(68, '2018-10-03', 3, 15075),
+(69, '2018-10-02', 3, 15045),
+(70, '2018-10-01', 3, 14910);
 
 -- --------------------------------------------------------
 
@@ -122,7 +139,7 @@ INSERT INTO `exchange_rate` (`id`, `from_currency`, `to_currency`) VALUES
 (1, 1, 2),
 (2, 2, 1),
 (3, 2, 3),
-(12, 4, 3);
+(14, 4, 3);
 
 --
 -- Indexes for dumped tables
@@ -163,13 +180,13 @@ ALTER TABLE `currency`
 -- AUTO_INCREMENT untuk tabel `daily_exchange_rate`
 --
 ALTER TABLE `daily_exchange_rate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT untuk tabel `exchange_rate`
 --
 ALTER TABLE `exchange_rate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -186,7 +203,7 @@ ALTER TABLE `daily_exchange_rate`
 --
 ALTER TABLE `exchange_rate`
   ADD CONSTRAINT `fk_from_currency` FOREIGN KEY (`from_currency`) REFERENCES `currency` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_to_currency` FOREIGN KEY (`to_currency`) REFERENCES `exchange_rate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_to_currency` FOREIGN KEY (`to_currency`) REFERENCES `currency` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
