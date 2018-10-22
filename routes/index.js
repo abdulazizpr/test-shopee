@@ -363,4 +363,53 @@ router.post('/get-exchange-rate-trend', function(req, res, next) {
   });
 });
 
+router.delete('/delete-daily-exchange-rate', function(req, res, next) {
+  var id = req.body.id;
+  
+  var query = 'SELECT * from exchange_rate where id='+id;
+
+  conn.query(query,function(error, rows, field){
+    if(error){
+      res.json({        
+        data : null, 
+        status: 500,
+        success : false,
+        error : error,
+        message: "Internal Server Error"  
+      });
+    }else{
+      if(rows.length <=0){
+        res.json({        
+          data : null, 
+          status: 404,
+          success : false,
+          error : error,
+          message: "Data Not Found"  
+        });
+      }else{
+        var query = 'DELETE from exchange_rate where id='+id;
+        
+        conn.query(query,function(error, rows, field){
+          if(error){
+            res.json({        
+              data : null, 
+              status: 500,
+              success : false,
+              error : error,
+              message: "Internal Server Error"  
+            });
+          }else{
+            res.json({ 
+              status: 200,
+              success : true,
+              error : null,
+              message: "Delete Data Success"  
+            });
+          }
+        });
+      }
+    }
+  })
+});
+
 module.exports = router;
