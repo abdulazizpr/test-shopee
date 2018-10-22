@@ -1,0 +1,17 @@
+version: '2'
+services:
+  db:
+    build: ./connection
+    ports:
+     - "3306:3306"
+    environment:
+     - MYSQL_ROOT_PASSWORD=password
+  app:
+    build: ./
+    ports:
+     - "3000:3000"
+    depends_on:
+     - db
+    environment:
+     - DATABASE_HOST=db
+  

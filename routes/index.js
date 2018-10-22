@@ -261,7 +261,9 @@ router.post('/get-exchange-rate-tracking', function(req, res, next) {
 
 //get exhcange rate trend
 router.post('/get-exchange-rate-trend', function(req, res, next) {
-  var date = '2018-10-19';
+  var date = req.body.date;
+  var from = req.body.from_currency;
+  var to = req.body.to_currency;
 
   var query = 'select c1.name_currency as "from", c2.name_currency as "to", de.date,de.rate as daily_rate '+
               'from exchange_rate er '+
@@ -271,7 +273,7 @@ router.post('/get-exchange-rate-trend', function(req, res, next) {
               'WHERE '+
               'de.date >= DATE("'+date+'") - INTERVAL 6 DAY '+
 	            'AND de.date <  DATE("'+date+'") + INTERVAL 1 DAY '+
-	            'and c1.name_currency = "GBP" and c2.name_currency = "USD" ' +
+	            'and c1.name_currency = "'+from+'" and c2.name_currency = "'+to+'" ' +
               'GROUP BY er.id, de.date '+
               'ORDER by er.id,de.date ASC ';
 
@@ -294,7 +296,6 @@ router.post('/get-exchange-rate-trend', function(req, res, next) {
           message: "Data not found"  
         });
       }else{
-
         var data = [];
         const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
         var dates7days = GetDates(new Date(date),7);
