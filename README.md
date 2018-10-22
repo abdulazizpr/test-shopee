@@ -6,7 +6,7 @@ This is documentaion to how to use this API for Front End Development.
 **Use Case**
 
 **1.  User wants to input exchange rate data**
-Endpoint url : `YOUR_URL/add-exchange-rate` 
+Endpoint url : `YOUR_URL/add-daily-exchange-rate` 
 Method : `POST`
 Parameters : 
 ```json
